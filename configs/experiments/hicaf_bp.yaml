@@ -1,0 +1,14 @@
+# Main model. Recipe = base.yaml (AdamW + OneCycle 3e-4, no EMA, DropPath warm-up, augmentation)
+# plus the result of the dev-split recipe search, selected on VAL_score
+# (runs hicaf_bp 10.726, hicaf_bp_e30 10.667, hicaf_bp_e30_reg 10.598):
+#   30 epochs, dropout 0.2, drop_path 0.2, weight decay 0.05.
+# All ablation configs inherit this file, so they share the same recipe.
+defaults: [base.yaml, models/hicaf_bp.yaml]
+experiment:
+  name: hicaf_bp_main
+model:
+  dropout: 0.2
+  drop_path: 0.2
+train:
+  epochs: 30
+  weight_decay: 0.05

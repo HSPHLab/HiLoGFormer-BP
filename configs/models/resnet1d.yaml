@@ -1,0 +1,7 @@
+# ResNet1D reference baseline (same architecture as the first experiments)
+model:
+  name: resnet1d
+  width: 32
+  dropout: 0.2
+  blocks: [2, 2, 2, 2]
+  kernel: 7

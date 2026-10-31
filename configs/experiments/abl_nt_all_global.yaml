@@ -1,0 +1,8 @@
+# No-time version (plan v1.4): same single change, applied to hicaf_bp_cal_notime (main model).
+# Ablation A7 (docs/ABLATION_PLAN.md): final v1 model with ONE change - local/global attention replaced by global attention in every block.
+# Everything else (folds, recipe, calibration, time context) identical to hicaf_bp_cal_t_scratch.
+defaults: [experiments/hicaf_bp_cal_notime.yaml]
+experiment:
+  name: abl_nt_all_global
+model:
+  local_window: 0

@@ -1,0 +1,17 @@
+# Reference baseline: ResNet1D on ECG + PPG, same recipe as the first experiments
+# (no EMA, no augmentation, lr 1e-3) so it reproduces the earlier ~12.7 / 9.6 mmHg on the dev split.
+defaults: [base.yaml, models/resnet1d.yaml]
+experiment:
+  name: resnet1d_ecgppg
+data:
+  augment: {enabled: false}
+train:
+  epochs: 60
+  patience: 10
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  pct_start: 0.1
+  div_factor: 25.0
+  final_div_factor: 10000.0
+  grad_clip: 5.0
+  ema_decay: 0.0

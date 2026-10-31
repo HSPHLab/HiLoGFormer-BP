@@ -1,0 +1,23 @@
+# data and results (never commit)
+data/
+data_processed/
+runs/
+paper/
+eda_outputs/
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.pt
+*.pth
+*.ckpt
+*.csv
+*.log
+
+# Python and editors
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+.vscode/
+.idea/
+.DS_Store

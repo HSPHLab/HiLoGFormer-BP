@@ -1,0 +1,8 @@
+# No-time version (plan v1.4): same single change, applied to hicaf_bp_cal_notime (main model).
+# Ablation A6 (docs/ABLATION_PLAN.md): final v1 model with ONE change - multi-scale tokenizer replaced by a single kernel (15 samples = 120 ms).
+# Everything else (folds, recipe, calibration, time context) identical to hicaf_bp_cal_t_scratch.
+defaults: [experiments/hicaf_bp_cal_notime.yaml]
+experiment:
+  name: abl_nt_single_scale
+model:
+  tokenizer_kernels: [15]

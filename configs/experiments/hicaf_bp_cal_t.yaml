@@ -1,0 +1,10 @@
+# Calibrated reference from now on: HiCAF-BP-Cal + time context.
+# Dev decision (VAL score): hicaf_bp_cal 8.028 -> + time context 7.871; protocol partners dropped (no gain).
+defaults: [experiments/hicaf_bp_cal.yaml]
+experiment:
+  name: hicaf_bp_cal_t
+model:
+  ctx_dim: 6
+calibration:
+  time_context: true
+  train_partner_protocol_prob: 0.0

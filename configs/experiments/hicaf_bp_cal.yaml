@@ -1,0 +1,27 @@
+# HiCAF-BP-Cal: calibration-based model (target + same-subject calibration recording -> BP change).
+# Encoder = HiCAF-BP with the locked recipe, initialised from the uncalibrated model of the SAME fold.
+defaults: [base.yaml, models/hicaf_bp.yaml]
+experiment:
+  name: hicaf_bp_cal
+model:
+  name: hicaf_bp_cal
+  dropout: 0.2             # encoder settings must match the checkpoint it is initialised from
+  drop_path: 0.2
+  cal_head_hidden: 256
+  cal_dropout: 0.1
+  bp_embed_dim: 64
+init:
+  encoder_checkpoint: "{runs_dir}/hicaf_bp_main/fold_{fold}/best.pt"
+  encoder_checkpoint_dev: "{runs_dir}/hicaf_bp_e30_reg/fold_dev/best.pt"
+calibration:
+  enabled: true
+  phase: initial
+  conditions: [calibration, sitting, supine]   # initial-visit resting readings
+  k_max: 3                 # first 3 candidates reserved as calibration readings (same target set for every k)
+  eval_k: [1, 3]           # first value = primary result (predictions_test.csv / registry)
+train:
+  epochs: 20
+  patience: 8
+  lr: 1.0e-4               # encoder is pre-trained: lower learning rate
+  weight_decay: 0.05
+  drop_path_warmup_epochs: 0

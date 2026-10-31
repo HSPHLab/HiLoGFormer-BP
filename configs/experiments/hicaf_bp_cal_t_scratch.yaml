@@ -1,0 +1,14 @@
+# Question: does the calibrated model need the pre-trained (uncalibrated) encoder?
+# Same as hicaf_bp_cal_t, but the encoder is trained from scratch on pairs (no init).
+defaults: [experiments/hicaf_bp_cal_t.yaml]
+experiment:
+  name: hicaf_bp_cal_t_scratch
+init: null
+train:
+  lr: 3.0e-4
+  epochs: 30
+  patience: 10
+  drop_path_warmup_epochs: 5
+calibration:                     # "uncalibrated model + shift" baseline rows (no init -> point to existing runs)
+  uncal_baseline_dir: "{runs_dir}/hicaf_bp_main/fold_{fold}"
+  uncal_baseline_dir_dev: "{runs_dir}/hicaf_bp_e30_reg/fold_dev"

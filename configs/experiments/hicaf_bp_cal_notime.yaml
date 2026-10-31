@@ -1,0 +1,11 @@
+# Final v1 model configuration WITHOUT time context, for external testing on PulseDB (no clock times there).
+# Identical to hicaf_bp_cal_t_scratch except: no time-of-day / time-since-calibration input.
+# Own experiment name, so the frozen v1 folder is never touched. Its 5-fold CV also gives the
+# CV-confirmed contribution of time context (v1 vs this model).
+defaults: [experiments/hicaf_bp_cal_t_scratch.yaml]
+experiment:
+  name: hicaf_bp_cal_notime
+model:
+  ctx_dim: 0
+calibration:
+  time_context: false

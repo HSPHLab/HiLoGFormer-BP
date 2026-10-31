@@ -1,0 +1,59 @@
+# =====================================================================
+# Base config — shared defaults for every experiment.
+# Experiments override only what they change (see configs/experiments/).
+# =====================================================================
+experiment:
+  name: unnamed            # set in each experiment file
+  seed: 42
+  deterministic: false     # true = slower but bit-for-bit repeatable cuDNN
+
+paths:
+  project_dir: .
+  data_dir: data_processed/v1
+  folds_file: data_processed/v1/folds.csv
+  runs_dir: runs
+
+data:
+  dataset: main            # main | strict | any_quality  (include_* flags from preprocessing)
+  inputs: [ecg, ppg]       # channels fed to the model: any of ecg, ppg
+  crop_s: 10.0             # model input length in seconds
+  train_without_exercise: false   # drop exercise recordings from TRAINING only
+  targets: [sbp, dbp]
+  aux_targets: [hr_ecg, pat_s]    # used only if loss.aux_weight > 0
+  augment:
+    enabled: true
+    amp_scale: [0.8, 1.2]  # per-channel amplitude scaling (after z-score)
+    p_amp: 0.5
+    noise_std: 0.02        # Gaussian noise, fraction of signal std (signal is z-scored)
+    p_noise: 0.5
+    # NOTE: no relative time shift between ECG and PPG — it would destroy pulse arrival time.
+
+loader:
+  batch_size: 128
+  num_workers: 8
+
+train:
+  epochs: 80
+  patience: 15             # early stopping on validation MAE (mean of SBP and DBP, EMA weights)
+  lr: 3.0e-4               # OneCycle max learning rate
+  weight_decay: 1.0e-2
+  pct_start: 0.1
+  div_factor: 20.0
+  final_div_factor: 100.0
+  grad_clip: 1.0
+  amp_bf16: true
+  ema_decay: 0.0           # 0 disables EMA. EMA decay must match the step count: with ~136 steps/epoch,
+                           # 0.999 averages over ~7 epochs and lags far behind (see hicaf_bp_diag run)
+  drop_path_warmup_epochs: 5
+
+loss:
+  main: huber              # huber | l1 | mse   (on standardised SBP/DBP)
+  huber_delta: 1.0
+  aux_weight: 0.0          # >0 enables auxiliary heads (model must support them)
+
+eval:
+  min_recordings_within_subject: 5
+
+smoke:                     # used only with --smoke
+  subjects_per_role_protocol: 15
+  epochs: 2

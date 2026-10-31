@@ -1,0 +1,27 @@
+# HiCAF-BP: Hierarchical Cross-modal Attention Fusion (see src/models/hicaf_bp.py)
+model:
+  name: hicaf_bp
+  d_model: 128
+  n_heads: 4                 # head dim 32
+  mlp_ratio: 4.0
+  # L1 multi-scale tokenizer (per signal)
+  tokenizer_channels: 64
+  tokenizer_kernels: [7, 15, 31]   # ~56 / 120 / 250 ms at 125 Hz
+  tokenizer_stages: 2              # total stride 2 * 2^stages = 8 -> 64 ms tokens
+  # depths of the encoders
+  intra_depth: 4             # L2, per signal: local, global, local, global
+  cross_depth: 2             # L3, bidirectional cross-attention
+  fusion_depth: 3            # L4
+  local_window: 16           # tokens (~1 s, about one heartbeat); 0 = all global
+  global_every: 2
+  # positions
+  pos_encoding: rope         # rope | sinusoidal | none
+  rope_base: 1000.0
+  # fusion
+  cross_attention: true
+  gate: true
+  # regularisation
+  dropout: 0.1
+  attn_dropout: 0.0
+  drop_path: 0.1
+  head_hidden: 128
